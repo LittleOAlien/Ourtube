@@ -3,11 +3,6 @@ name: 01 - 🎬 دانلود ویدیو
 on:
   workflow_dispatch:
     inputs:
-      activation_key:
-        description: '🔑 کدفعالسازی (یکبار در ابتدا ) اگر ندارید از اینجا بگیرید : pay.avasam.ir/link/769604'
-        required: false
-        default: ''
-        type: string
       video_urls:
         description: '🔗 لینک ویدیو ( چند لینک با فاصله )'
         required: true
@@ -44,19 +39,6 @@ jobs:
       contents: write
 
     steps:
-      - name: بررسی وضعیت فعال بودن
-        id: cache-activation
-        uses: actions/cache@v4
-        with:
-          path: .avasam_activated
-          key: avasam-activated-${{ github.repository }}-${{ github.actor }}
-
-      - name: 🔐 بررسی کد فعالسازی
-        id: validate_key
-        run: |
-          USER_KEY="${{ github.event.inputs.activation_key }}"
-          KEYS_URL="https://raw.githubusercontent.com/nikzad-avasam/notifications/refs/heads/main/assets/ytmjs0920qQgo0000.s"
-
           echo "=============================================="
           echo "🔐 کدفعالسازی بررسی شد"
           echo "=============================================="
@@ -149,13 +131,6 @@ jobs:
             echo "=============================================="
             exit 1
           fi
-
-      - name: ذخیره سازی وضعیت فعال بودن
-        if: success()
-        uses: actions/cache/save@v4
-        with:
-          path: .avasam_activated
-          key: avasam-activated-${{ github.repository }}-${{ github.actor }}
 
       - name: بررسی اولیه
         uses: actions/checkout@v4
